@@ -101,6 +101,10 @@ To monitor uevents with udevadm use `udevadm monitor`. Note that there are two c
 
 You can also filter events by subsystem. For example, to seeonly kernel messages pertaining to changes in the SCSI subsystem use: `udevadm monitor --kernel --subsystem-match=scsi`.
 
+## Extra (slides + notities)
+
+TODO
+
 
 
 
