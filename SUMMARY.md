@@ -4,5 +4,5 @@
 * [First Chapter](chapter1.md)
 * [Second Chapter](chapter2.md)
 * [Third Chapter](chapter3.md)
-* Fourth Chapter
+* [Fourth Chapter](chapter4.md)
 
