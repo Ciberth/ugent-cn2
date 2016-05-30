@@ -9,9 +9,11 @@ Device files are sometimes called device nodes. Device files are in the /dev dir
 
 Programs access data from a block device in fixed chunks. A block device's total size is fixed and easy to index. Processes have random access to any block in the device with the help of the kernel.
 
+
 ### Character device
 
 Character devices work with data streams. You can only read chars from or write chars to character devices. They don't have a size. Printers directly attached to your computer are represented by character devices. During character device interaction, the kernel cannot back up and reexamine the data stream after it has passed data to a device or process.
+
 
 ### Pipe device
 
@@ -26,8 +28,8 @@ _Sockets_ are often found outside the /dev directory. Socket files represent Uni
 _(3.2)_
 
 2 Problems:
-- The name of the device doesn't say a lot
-- The kernel assigns devices in the order in which they are found, so a device may have a different name between reboots. 
+* The name of the device doesn't say a lot
+* The kernel assigns devices in the order in which they are found, so a device may have a different name between reboots. 
 
 The **sysfs interface** is an uniform view based on their actual hardware attributes. The base path for devices is `/sys/devices`. An example for a SATA hard disk (/dev/sda) is `/sys/devices/pci0000:00/0000:00:1f.2/host0/target0:0:0/0:0:0:0/block/sda`.
 
