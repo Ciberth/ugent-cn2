@@ -44,3 +44,10 @@ Only root is an exception to this. For this reason, root is known as the superus
 > As powerful as the root user is, it still runs in the operating system's user mode, not kernel mode!
 
 **Groups** are sets of users. The primary purpose of groups is to allow a user to share file access to other users in a group.
+
+## Extra (slides + notities)
+
+TODO
+
+Gebruik maken van root kan door in te loggen als root `su -` of via `sudo <COMMAND>`.
+> Configuratie in `/etc/sudoers`
