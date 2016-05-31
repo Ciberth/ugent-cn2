@@ -41,16 +41,200 @@ Others:
 ## Exit Codes
 _(11.4)_
 
+When a Unix program finishes it leaves an _exit code_. When it is 0 it usually means that the program ran without a problem. 
+
+> Note: If you intend to use the exit code of a command, you **must** use or store it immediately after running the command.
+
+> Note²: When writing shell code that aborts a script, use something like exit 1 or something different from 0.
+
+> Note³: Some programs return non-zero exit codes as a result of an operation without trying to tell you they failed. Examples are grep and diff (they return 0 if they match a pattern and 1 if they don't, 2 is then the real error code). 
+
+## Conditionals
+_(11.5)_
+
+```bash
+#!/bin/sh
+if [[ "$1" = hi ]]; then
+	echo 'The first argument was "hi"'
+else 
+	echo -n 'The first argument was not "hi" -- '
+	echo It was '"'$1'"'
+fi
+```
+
+> Note: [ is actually a program called _test_.
+
+> Note²: Use "$1" when checking parameter lists to not get an error when they are empty.
+
+**&&** and **||** are logical constructs (and and or) and can be replaced with -a and -o.
+
+`[ -f file ]` checks whether file is a regular file (not a directory or special file). A test can be inverted with the ! operator. 
+
+
+**File Tests**
+
+Mostly unary operations (they require only one argument).
+* -e true if file exists
+* -s true if file is not empty
+
+| Operator       | Tests For    |
+| -------------- |:------------:|
+| -f | regular file 			|
+| -d | directory      			|
+| -h | symbolic link    	  	|
+| -b | block device      		|
+| -c | character device      	|
+| -p | namped pipe	      		|
+| -S | socket		     		|
 
 
 
+| Operator       | Operator   |
+| -------------- |:------------:|
+| -r | readable 			|
+| -w | writable      			|
+| -x | executable    	  	|
+| -u | setuid      		|
+| -g | setgid      	|
+| -k | sticky bit	      		|
+
+Finally there is the possibility for binary operators. **-nt** (newer than), **-ot** (older than) and **-ef** (compares two files and returns true if they share inode numbers and devices = hard links).
 
 
+**String Tests**
 
+| Operator       | Operator   |
+| -------------- |:------------:|
+| = | true if operands are equal 			|
+| != | true if operands are not equal      			|
+| -z | true if argument is empty    	  	|
+| -n | true if argument is not empty      		|
+
+**Arithmetic Tests**
+
+> Note: When using numbers use -eq instead of = 
+
+| Operator       | Returns true when first argument is .. the second   |
+| -------------- |:------------:|
+| -eq | equal to 			|
+| -ne | not equal to      			|
+| -lt | less than	  	|
+| -gt | greater than     		|
+| -le | less than or equal to  	|
+| -ge | greater than or equal to	|
+
+Matching strings with case example:
+
+```bash
+
+#!/bin/sh
+
+case $1 in
+	bye)
+		echo Fine, bye.
+		;;
+	hi|hello)
+		echo Nice to see you.
+		;;
+	what*)
+		echo Whatever.
+		;;
+	*)
+		echo 'Huh?'
+		;;
+esac
+
+```
+
+## Loops
+_(11.6)_
+
+### For loops (foreach)
+
+```bash
+
+#!/bin/sh
+for str in one two three four; do
+	echo $str
+done
+
+```
+
+### While loops 
+
+```bash
+
+#!/bin/sh
+
+FILE=/tmp/whiletest.$$;
+echo firstline > $FILE
+while tail -10 $FILE | grep -q firstline; do
+..
+done
+
+```
+
+## Command Substitution
+_(11.7)_
+
+The Bourne shell can redirect a command's standard output back to the shell's own command line. You can store the command output in a shell variable by enclosing a command in $().
+
+> Note: Consider using a pipeline to _xargs_ (or use the -exec option) if you want to invoke a command on several filenames that you get as a result of a _find_ command.
+
+> Note²: The traditional syntax for command substitution is are back-ticks. Use the newer $() instead.
+
+## Temporary File Management
+_(11.8)_
+
+
+The `mktemp` command can be used to create temporary filenames. 
+
+```bash
+
+#!/bin/sh
+
+TMPFILE1=$(mktemp /tmp/im1.XXXXXX)
+TMPFILE2=$(mktemp /tmp/im2.XXXXXX)
+
+..
+
+rm -f $TMPFILE1 $TMPFILE2
+
+```
+
+> Note: If the script is aborted, the temporary files could be left behind. Use the `trap` command to create a signal handler to catch the signal that CTRL-C generates and remove the temporary files!
+
+`trap "rm -f $TMPFILE1 $TMPFILE2; exit1" INT`
+
+
+## Here Documents
+_(11.9)_
+
+Used for a large section of txt. 
+
+```bash
+
+#!/bin/sh
+
+DATE=$(date)
+cat <<EOF
+Date: $DATE
+
+The output above is from the Unix date command.
+It's not a very interesting command.
+EOF
+
+```
+The <<EOF and EOF control the here document. 
 
 
 
 
 ## Extra (slides + notities)
+
+* Use ( ) for subshell.
+* `read var` reads from standard input and stores in $var.
+
+
 
 TODO
