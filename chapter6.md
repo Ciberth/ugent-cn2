@@ -81,7 +81,7 @@ There are also variables and specifiers. **Variables** (such as $OPTIONS or $MAI
 * `systemctl [list-units]` to view a list of active units.
 * `systemctl --full --all` to get full names and all units (not just active).
 * `systemctl status media.mount` status of a unit.
-* `journalctl \_SYSTEMD\_UNIT=unit` to view a unit's entire journal.
+* `journalctl _SYSTEMD_UNIT=unit` to view a unit's entire journal.
 * `systemctl reload unit` reloads configuration for unit.
 * `systemctl daemon-reload`  reloads all unit configurations.
 * `systemctl list-jobs` lists unit state changes.
