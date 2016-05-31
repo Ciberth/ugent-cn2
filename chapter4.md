@@ -69,11 +69,75 @@ Some options for mounting are:
 
 Remounting can be done with `mount -n -o remount /`
 
-*/etc/fstab*
+**/etc/fstab** is the place to be for a list of filesystems and options. At boot time the system will look at this file to mount. Each line corresponds to one filesystem. It has six fields: _the device or UUID, the mount point, the filesystem type, options, backup information (used by dump command) and the filesystem integrity test order_. This last field is set to ensure that fsck will always run. For the root filesystem use 1, for any other use 2. 0 can be used to disable the bootup check (might be usefull for swap drives or CD-ROM drives). 
+
+Although the /etc/fstab has been the tradition way to represent filesystems there are alternatives. **/etc/fstab.d** is an example. This directory contains individual filesystem configuration files. The idea is similar to other configuration directories. Another alternative is to configure **systemd units** for the filesystems. 
+
+
+The command `df` can be used to view the size and utilization of your currently mounted filesystems. It shows the _the filesystem device, the total capacity of the filesystem in blocks of 1024 bytes, number of occupied blocks, number of free blocks, percentage of blocks in use and the mount point_.
+
+
+`du` prints disk usage. The `du -s` command turns on summary mode. To evaluate a specific directory, change to that directory and run `du -s *.`.
+
+To check a filesystem one can use `fsck`. Just like with `mkfs` there are different versions for each filesystem type. Example: `fsck /dev/sdb1`. To check without modifying anything run `fsck -n`. To recover with the use of a backup superblock use `fsck -b num` where `num` is an alternate block. To view a list of superblock backup numbers (without destroying your data) use `mkfs -n`.
+
+> Note: You should never use fsck on a mounted filesystem. There is only one exception, if you mount the root partition read-only in single user mode, you may use fsck on it.
 
 
 
-4.4 niet in slides
+
+## Swap space
+_(4.3)_
+
+Not every partition on a disk contains a filesystem. Augmenting the RAM with disck space (i.e moving pieces of memory to and from a disk storage) is called swapping (because pieces of idlle programs are swapped to the disk in exchange for active pieces residing on the disk). The disk area used to store memory pages is called _swap (space)_. You can use `free` to see the current swap usage.
+
+
+If you want to use an entire **disk partition** as swap space you need to:
+* make sure the partition is empty,
+* run `mkswap dev` where `dev` is the partition's device,
+* execute `swapon dev` to register the space with the kernel,
+* edit _/etc/fstab_ to make sure the system uses the swap space on boot time.
+
+If you want to use a **file** as swap space you have to:
+* `dd if=/dev/zero of=swapFile bs=1024k count=numMb`
+* `mkswap swapFile`
+* `swapon swapFile`
+
+With `swapFile` the name of the file and `numMb` the desired size in megabyts. `swapoff` can be used to remove it from the kernel's active pool.
+
+
+## Inside a traditional filesystem
+_(4.5)_
+
+A traditional Unix filesystem has 2 primary components. A pool of data blocks where you can store data and a database system that manages that data pool. Make note of the difference in the data pool and the inode table.
+
+Compare the next two images!
+
+![FS User perspective](images/fsuser.png)
+![FS Real](images/fsreal.png)
+
+How does this work? Well for any ext2/3/4 filesystem, you start at inode number 2, the root inode. Following that arrow to the data pool you can see two entries (the dir1 and dir2). They each corresponds to different inodes. 
+
+Let's examine dir1/file2 in detail. The kernels does the following:
+* Determines the path's components: dir1 & file2.
+* Follows root inode to directory data.
+* Finds the name of dir1 in directory data of inode 2 (which points to inode 12).
+* Looks up inode 12 and verifies that it is a directory node.
+* Follows inode 12 data link to the data pool.
+* Locates the file2 in inode 12's directory data (which points to inode 14).
+* Looks up inode 14 in directory data and sees that it is a file node.
+* The kernel knows the properties of the file and can open it by following inode 14's data link.
+
+Use `ls -i` to view inode numbers for any directory. 
+
+> Note when counting the link count. Hard links will raise the number and don't forget the extra superblock (in root) as it tells you where to find the root inode.
+
+The last piece of the puzzle is solving how the filesystem knows which blocks are in use and which are available. A _block bitmap_ is used for this. The filesystem reserves a series of bytes, witch each bit corresponding to one block in the data pool. 0 meaning that the block is free and 1 that it's in use. (De)allocating is a now a matter of flipping bits.
+
+
+
+
+
 
 ## Extra (slides + notities)
 
