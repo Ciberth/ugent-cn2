@@ -183,4 +183,25 @@ You can use a "live"-image to boot and restore stuff or you can go for an usable
 
 ## Extra (slides + notities)
 
-TODO
+_(Slides)_
+
+Voordelen Systemd:
+* beheer van daemons maar ook systeemtoestanden, netwerkresources, devices, mountpunten...
+* geen shell scripting veresit
+* ruimere mogelijkheden om afhankelijkheden te beschrijven
+* parallelle opstart van services
+* snellere opstarttijden
+* services kunnen getriggerd worden door events
+* kan gestopte daemons automatisch herstarten
+* beveiliging
+* uniform beheer & logging
+* verschillen tussen distributies vervagen
+
+Nadelen Systemd:
+* software suite ipv init systeem
+* groeiend aantal extra (soms onnodige) featurs
+* absorptie van andere componenten (zoals udev)
+* wederzijdse afhankelijkheden
+* niet altijd conform met ontwerpprincipes
+* men gaat alsmaar verder weg van Unix
+* attitude/ ego trippers in ontwikkeling
