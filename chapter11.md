@@ -236,5 +236,43 @@ The <<EOF and EOF control the here document.
 * `read var` reads from standard input and stores in $var.
 
 
+_(Slides)_
 
-TODO
+![Bash command sequence](images/sequence.png)
+
+TODO detail of sequence.
+
+`var=$(printf)` wordt beter vervangen door `printf -v var`.
+
+**Process substitution** kan via `<(...)` of `>(..)`.
+
+I/O gebeurt via **file descriptor**, gekoppeld aan tijdelijke **named pipe** `ls -l <(:) >(:)`. Dit kan een alternatief bieden voor pipes en subshells. 
+
+TODO vb van process substitution.
+
+**Parameter expansion** ondersteunt extended globbing.
+
+TODO vb van parameter expansion.
+
+**Arithmetic substitution**.
+
+TODO vb van arithmetic substitution.
+
+Speciale variabelen zijn:
+
+* $0
+* $?
+* $$
+* $-
+* $IFS
+* $REPLY
+* $BASHOPTS & $SHELLOPTS
+* $LINENO
+* $RANDOM
+* $SECONDS
+* $PWD & $OLDPWD
+* $UID
+* ${GROUPS[@]}
+* ${BASH_REMATCH[@]}
+* ${PIPESTATUS[@]}
+
