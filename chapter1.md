@@ -52,5 +52,6 @@ TODO
 Gebruik maken van root kan door in te loggen als root `su -` of via `sudo <COMMAND>`.
 > Configuratie in `/etc/sudoers`
 
-Test commit from github.com
-Another test commit for webhook.
+
+
+COMMON WEBHOOK
