@@ -10,6 +10,7 @@ bij /dev/null zal alle data die hier naartoe geschreven worden genegeerd en wegg
 Bij random komt de beste random kwaliteit, maar een potentiële trage uitvoer is mogelijk. Urandom geeft geen delay indien entropy pool op is.
 
 ### Waarom is `while read x < f; do echo $x ; done` **not done** en hoe los je dit op met file descriptoren?
+AANVULLEN
 
 exec 3<file
 while read x<&3; do iets; done
@@ -51,13 +52,18 @@ Aanpassingen aan de hardlink resulteert in aanpassingen aan de file zelf, bij so
 Voorbeeld? ln hlink ;ln -s slink?
 
 ### Welke soort partities bestaan er? Geef een overzicht van de schijfindeling als je weet da er maar 1 partitie op de schijf is.
+//TODO
 
 ### Wat is een superblok? Wat is een inode?
+
+//TODO
 Elke file of directory heeft een inode. 
 
 ### Wat is het nut van de init.d en rcX.d mappen en bestanden. Verduidelijk kort. 
+//TODO
 
 ### Stel dat je je eigen script zou moeten schrijven voor adduser. Welke stappen zou je allemaal moeten ondernemen?
+//KENNEN?
 
 ### Leg uit wat een sticky bit is. Leg SUID en SGID uit.
 Een sticky bit wordt gebruikt zodat enkel de creator zijn files en directories kan verwijderen, geen andere gebruikers.
@@ -71,6 +77,8 @@ omdat bash dan denkt dat het een parameter of functie is, en geen toekenning.
 Variabelen zijn lokaal in een subshel behalve environment variabelen, dit zijn variabelen die geëxporteerd werden. Deze globale variabelen kunnen meegegeven worden naar een kind, die een nieuwe subshell is, maar elke shell heeft zijn eigen verzameling environment variabelen, een commando of subshell dat aangeroepen wordt in een shell kan environment variabelen overerven van de aanroepende shell, maar deze kan die variabelen niet uit de subshell overerven.
 
 ### Leg uit wat een Here document is.
+
+//TODO
 
 
 
