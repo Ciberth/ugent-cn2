@@ -47,11 +47,14 @@ Only root is an exception to this. For this reason, root is known as the superus
 
 ## Extra (slides + notities)
 
-TODO
+_(Slides)_
 
 Gebruik maken van root kan door in te loggen als root `su -` of via `sudo <COMMAND>`.
 > Configuratie in `/etc/sudoers`
 
-
-
-COMMON WEBHOOK
+De distributie:
+* **kernel** (inclusief systeemaanroepen en POSIX interface)
+* **services** (severs & daemons)
+* **utilities** (GNU)
+* **programmeeromgevingen**
+* **GUI** (KDE, Gnome)
