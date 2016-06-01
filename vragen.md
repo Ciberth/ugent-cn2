@@ -1,10 +1,13 @@
 # Interessante vragen
 
 ### Leg het verschil uit tussen single en double quotes in bash. 
+Bij dubbel quotes worden metacharacters/wildcards nog steeds geïnterpreteerd, bij single(en dus strong quotes) worden deze characters letterlijk genomen.
 
 ### Leg het verschil uit tussen /dev/null en /dev/zero.
+bij /dev/null zal alle data die hier naartoe geschreven worden genegeerd en weggeschreven. Indien een file wordt aangemaakt met /dev/null zal deze ook volledig leeg zijn. Indine met /dev/zero gebruikt zal de file opgevuld worden met nullen. /dev/zero wordt vaak als een default gebruikt.
 
 ### Leg het verschil uit tussen /dev/random en /dev/urandom.
+Bij random komt de beste random kwaliteit, maar een potentiële trage uitvoer is mogelijk. Urandom geeft geen delay indien entropy pool op is.
 
 ### Waarom is `while read x < f; do echo $x ; done` **not done** en hoe los je dit op met file descriptoren?
 
