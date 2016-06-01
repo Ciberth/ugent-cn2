@@ -10,8 +10,7 @@ bij /dev/null zal alle data die hier naartoe geschreven worden genegeerd en wegg
 Bij random komt de beste random kwaliteit, maar een potentiële trage uitvoer is mogelijk. Urandom geeft geen delay indien entropy pool op is.
 
 ### Waarom is `while read x < f; do echo $x ; done` **not done** en hoe los je dit op met file descriptoren?
-AANVULLEN
-
+Kan fouten geven bij bestanden bijvoorbeeld als ze een spatie hebben in de naam. => bij filedescriptoren geeft dit geen problemen.
 exec 3<file
 while read x<&3; do iets; done
 exec 3<&-
