@@ -138,7 +138,26 @@ The last piece of the puzzle is solving how the filesystem knows which blocks ar
 
 
 
-
 ## Extra (slides + notities)
 
-TODO
+_(Slides)_
+
+`parted -ls`
+`tune2fs`
+`df`
+`blkid`
+`lsblk -f`
+`free`
+`mkswap ...`
+`swapon ...`
+
+Alternatief 1 voor `/etc/fstab` is **udisks2** daemon.
+
+`udisksctl monitor|status|dump` ...
+
+Alternatief 2 voor `/etc/fstab` is **systemd** mount units.
+
+Configuratie zit in `/etc/system/systemd/....mount`.
+`Systemctl start|stop ....mount`.
+
+Om inode details te zien gebruik `ls -i`, `stat`, `find ... -inum ...`.
