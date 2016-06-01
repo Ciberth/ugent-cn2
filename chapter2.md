@@ -132,5 +132,99 @@ A symbolic link can be created with `ln -s target linkname` and is essentialy a 
 
 ## Extra (slides + notities)
 
-TODO
+_(Slides)_
 
+shell:
+* **user interface** (CLI)
+* **command interpreter** (interactief)
+* **uitvoering scripts** (niet-interactief)
+
+Soorten shells: Bourne (sh -> bash) op Linux, Korn (ksh) op System V, Joy (csh) op BSD en Falstad (zsh).
+
+Om een lijst van beschikbare shells op te vragen gebruik het commando `chsh -l`. `chsh -s` kan gebruikt worden om de shell te wijzigen. Dit kan terminaal zijn voor root!
+
+`declare -p` geeft een overzicht van alle shell variabelen. Het-x attribuut wijst op ee environment variabele. `env` geeft een overzicht van de environment.
+
+**Shell options** zijn zogenaamde on/off switches. -:on, +:off. Voorbeeld: `set +o errexit` of `set -o noglob`. Om de ingestelde opties te bekijken gebruik `echo $SHELLOPTS` of `echo $-`.
+
+Sommige shell opties kunnen enkel via **shopt** opgevraagd of ingesteld worden. `shopt -s ...` stelt iets in, `shopt -u ...` schakelt het uit. `echo $BASHOPTS` kan je gebruiken om ingestelde shopt opties te bekijken.
+
+Sommige uitvoerbare programma's zijn bash _builtin_ (door bash geïmplementeerd) de rest wordt _extern_ genoemd. Builtin is doorgaans efficiënter.
+
+`which [-a] ...`, `type [-a] [-t] ...` kan men gebruiken om te ontrafelen of programma's builtin of extern zijn.
+
+`echo ${BASH_CMDS[...]}` voor _hashed_. `enable [-a] [-n] ... ...` kan men gebruiken om builtins te disablen of enablen.
+
+
+![Special characters](images/specialchars.png)
+
+_Weak_ quotes zijn dubbele quotes. Hierbinnen behouden de speciale tekens hun betekenis. Single quotes zijn _strong_ quotes en dus letterlijk. $'..' worden POSIX quotes genoemd en behouden eveneens hun speciale betekenis.
+
+I/O kanalen:
+* STDIN 0< of < 
+* STDOUT 1> of >, 1>> of >>, 1>| of >|
+* STDERR 2>, 2>>, 2>&1, >&, &>
+
+> Note: niet te verwarren met _file descriptors_.
+
+Help:
+* man
+* info
+* help
+* /usr/share/doc/*
+
+Filters:
+* cat
+* tac
+* rev
+* wc
+* head
+* tail
+* nl
+* cut
+* od
+* hexdump
+* sort
+* uniq
+* fold
+* fmt
+* strings
+* tr
+* grep
+* perl
+* xargs
+
+File Modes and Permissions:
+* `ls -l`
+* `chown`, `chgrp` en `chmod`
+* `umask` en `umask -S`
+
+
+Manipulating Processes:
+* `ps`
+* `echo $$`
+* `pstree`
+* `kill`
+* `pgrep`
+* `pkill -signal`
+* `sleep`
+* `suspend`
+* `jobs`
+* `%` of `fg` en `bg`
+* `wait`
+
+
+TODO uitleg setuid, setgid, sticky bit
+
+
+
+TODO vb'n van:
+* declare -x, declare +x, echo ${}, declare -p, unset, export
+* man -k (apropos), man -f (whatis)
+* stat, comm, paste, join, split
+* `echo [-e] [-n]`
+* (s)locate
+* find
+* | xargs, -exec|ok, | bash
+* filters
+* kills, sleep, ..
