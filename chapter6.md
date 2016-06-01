@@ -166,6 +166,7 @@ Changing the runlevel to 0 (shutdown) or 6 (reboot) goes like this:
 7. The system writes all buffered data out to the filesystem with the sync program.
 8. The final step is to tell the kernel to reboot or stop. This can be done bij init or reboot, halt or poweroff.
 
+Note: step 7 seems to be wrong. The filesystem is read-only so there can be no writes. See http://unix.stackexchange.com/questions/286762/shutdown-procedure-clarification
 
 ## Emergency Booting and Single-User mode
 _(6.9)_
