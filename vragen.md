@@ -65,6 +65,7 @@ Dankzij de SUID bit kan de gebruiker dingen doen waarvoor hij anders bepaalde pe
 Als de GUID gezet werd dan zullen bestanden die in deze directory aangemaakt worden van diezelfde groep zijn van de directory en niet van de groep van de gebruiker zelf.
 
 ### Leg uit waarom Bash geen spaties rond het = teken wil bij het toekennen van een variabele. 
+omdat bash dan denkt dat het een parameter of functie is, en geen toekenning.
 
 ### Leg uit waarom een variabele enkel van ouder naar kind kan en niet andersom. Maak gebruik van de woorden subshell en export in je antwoord.
 Variabelen zijn lokaal in een subshel behalve environment variabelen, dit zijn variabelen die geëxporteerd werden. Deze globale variabelen kunnen meegegeven worden naar een kind, die een nieuwe subshell is, maar elke shell heeft zijn eigen verzameling environment variabelen, een commando of subshell dat aangeroepen wordt in een shell kan environment variabelen overerven van de aanroepende shell, maar deze kan die variabelen niet uit de subshell overerven.
