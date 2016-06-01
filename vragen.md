@@ -21,6 +21,11 @@ exec 3<&-
 
 ### Leg de afsluitprocedure uit van een Linux-systeem.
 
+###  Leg het verschil uit tussen named en unnamed pipes/semanforen. Wanneer gebruik je (un)named.
+Unnamed pipes are created, used and destroyed within the life a set of processes. Each end of the pipe has it’s own file descriptor. One end is for reading and one end is for writing. When you are done with a pipe, it is closed like any other file. Gebruik pipe().
+
+Named pipes are also called FIFO’s (first in first out). They have “names” and exist as special files within a file system. (file type p) They exist until they are removed with rm or unlink() They can be used with unrelated process not just descendants of the pipe creator. Gebruikt mknod.
+
 ### Geef een overzicht van de verschillende runlevels.
 0 poweroff.target
 1 rescue.target, systeemadministrator modus
