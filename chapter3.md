@@ -103,8 +103,20 @@ You can also filter events by subsystem. For example, to seeonly kernel messages
 
 ## Extra (slides + notities)
 
-TODO
+_(Slides)_
 
+_Virtuele en (pseudo-)terminals_ zijn te vinden in `/dev/tty*` en `/dev/pts/*`.
+
+`tput init`
+
+File descriptoren zijn t vinden in `/proc/pid/fd/*`. Het openen van een nieuwe descriptor gebeurt als volgt: `exec #< ...`.
+
+Lezen van bestand f zonder file descriptoren `read < f ; echo $x`. Via file descriptoren `exec #< f ; read x <&# ; echo $x`.
+
+Het maken van device files kan via `mknod` of `mkfifo` (voor named pipes).
+
+TODO sysfs device path
+TODO udevd overview/summary, rest staat hierboven vrij uitgebreid
 
 
 
