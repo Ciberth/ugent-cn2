@@ -112,4 +112,8 @@ Upon start, the kernel reads contents of the archive into a temporary RAM filesy
 
 ## Extra (slides + notities)
 
-TODO
+`/dev/kmsg`
+`dmesg [-d]`
+`journalctl -k -b`
+
+Keuze voor kernelparameters cfr. `/proc/cmdline` en geconfigureerd door `grub.conf`.
