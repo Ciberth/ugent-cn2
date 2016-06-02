@@ -21,7 +21,7 @@ exec 3<&-
 
 ### Leg de afsluitprocedure uit van een Linux-systeem.
 
-## waarom kan je hard links kunt maken over verschillende fysische diskpartities?
+### waarom kan je geen hard links maken over verschillende fysische diskpartities?
 hard links dezelfde datablokken delen op de schijf maar wat die eigenlijk doet zijn 2 of meer filenames met dezelfde inode associeren
 en inodes zijn uniek op een filesysteem
 
