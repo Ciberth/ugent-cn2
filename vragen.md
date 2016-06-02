@@ -21,6 +21,10 @@ exec 3<&-
 
 ### Leg de afsluitprocedure uit van een Linux-systeem.
 
+## waarom kan je hard links kunt maken over verschillende fysische diskpartities?
+hard links dezelfde datablokken delen op de schijf maar wat die eigenlijk doet zijn 2 of meer filenames met dezelfde inode associeren
+en inodes zijn uniek op een filesysteem
+
 ###  Leg het verschil uit tussen named en unnamed pipes/semanforen. Wanneer gebruik je (un)named.
 Unnamed pipes are created, used and destroyed within the life a set of processes. Each end of the pipe has it’s own file descriptor. One end is for reading and one end is for writing. When you are done with a pipe, it is closed like any other file. Gebruik pipe().
 
