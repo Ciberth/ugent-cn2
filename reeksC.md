@@ -54,7 +54,7 @@ Het type wordt aangeduid door middel van de optie nummer 53 te zetten. De beschi
 Wanneer de DHCP server niet (meteen) zou antwoorden worden door de client volgende acties ondernomen. 
 	1. Wanneer de client geen gehooor zou krijgen, probeert hij in tussenpozen (2+,4+,8+,16+)s de DHCP-request te versturen*
 	2. Is client nog steeds niet instaat om te communiceren met oorspronkelijke DHCP:  
-		- Wachten tot $T_2$ verstreken is (de tijd voor rebinding, ongeveer $$$\frac{7}{8}$$$ van totale lease)
+		- Wachten tot $T_2$ verstreken is (de tijd voor rebinding, ongeveer $\frac{7}{8}$ van totale lease)
 		- Wanneer de rebinding status bereikt wordt probeert client huidige lease te vernieuwen bij willekeurige
 			beschikbare DHCP.
 	3. **Er kan een server reageren met *DHCP-Acknowledgement*** en de client kan zoals ervoor verdergaan
