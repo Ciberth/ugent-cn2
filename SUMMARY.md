@@ -1,6 +1,6 @@
 # Summary
 
 * [Introduction](README.md)
-* [Reeks B](reeksA.md)
+* [Reeks B](reeksB.md)
 * [Reeks C](reeksC.md)
 
