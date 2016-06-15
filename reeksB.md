@@ -43,7 +43,7 @@ Deze protocollen moeten rekening houden met de gevolgen van draadloze verbinding
 	- energie-verbruik
 	- signaal/ruis verhouding
 * minimale processing(energieverbruik) en netwerkbelasting
-* enkel gedistribueerde aloritmen
+* enkel gedistribueerde algoritmen
 
 ### c. Geef de twee fundamenteel verschillende manieren om Ad Hoc routingprotocollen te realiseren, inclusief hun relatieve voor- en nadelen en hun optimaal toepassingsgebied.
 * Proactive of table driven protocollen
