@@ -5,8 +5,20 @@
 ### a. Met welke opdrachten kan men op Windows toestellen nagaan welke de karakteristieken zijn van de eigen Wifi interface en van de Wifi zenders in de buurt. Geef aan welke karakteristieken vermeld worden.
 
 ### b. In welk opzicht zijn Ad Hoc routingprotocollen (in wireless meshes) anders dan de meer traditionele routingprotocollen (bedoeld voor internetwerken die uit bekabelde subnetwerken bestaan) ?
+Deze protocollen moeten rekening houden met de gevolgen van draadloze verbindingen:
+	+ mobiliteit van routers
+	+ uitvallen en herstellen van links
+	+ variabele kwaliteit van links
+	+ extra metrieken:
+		- stabiliteit verbinding
+		- energie-verbruik
+		- signaal/ruis verhouding
+	+ minimale processing(energieverbruik) en netwerkbelasting
+	+ enkel gedistribueerde aloritmen
 
 ### c. Geef de twee fundamenteel verschillende manieren om Ad Hoc routingprotocollen te realiseren, inclusief hun relatieve voor- en nadelen en hun optimaal toepassingsgebied.
+	+ Proactive of table driven protocollen
+	+ Reactieve of on-demand protocollen
 
 ### d. Bespreek een concreet voorbeeld van een implementatie die tot één van deze categorieën behoort, met vooral aandacht voor de verschillen met het traditionele routingprotocol (voor bekabelde internetwerken), waarvan het is afgeleid.
 
