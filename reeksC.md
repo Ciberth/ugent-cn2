@@ -227,11 +227,166 @@ Ze configureren zichzelf een tijdelijke IP-configuratie:
 
 ![IPv6 header](https://raw.githubusercontent.com/Ciberth/ugent-cn2/master/media/ipv6.jpg)
 
-2. **Extensie headers**
-	- In toekomst makkelijk nieuwe extensies/opties te definiëren
-	- Tussenliggende routers kunnen deze info zonder enige interpretatie doorzenden (bevalve Hop-By-Hop options)
-	- **Structuur**
-		* 2 bytes : type en grootte van de header
-		* Gevolgd door extensie specifieke gegevens
+
 
 ###b) Geef en bespreek de verschillende soorten extensieheaders die momenteel voor IPv6 gedefinieerd zijn.
+- In toekomst makkelijk nieuwe extensies/opties te definiëren
+- Tussenliggende routers kunnen deze info zonder enige interpretatie doorzenden (bevalve Hop-By-Hop options)
+- **Structuur**
+	* 2 bytes : type en grootte van de header
+		* Gevolgd door extensie specifieke gegevens
+- Enkele headers:
+	* **Hop-by-Hop Options**: opties door tussenliggende routers moeten verwerkt worden. Moet onmiddelijk na IPv6 header komen. Opties gecodeerd als *Type-length-value* (TLV). Momenteel zijn er 2  nuttige opties
+		- **Jumbo Payloads** optie (type 194) : maakt afhandelen van datagrammen groter dan 65535bytes mogelijk (jumbodatagrammen).
+		- **Router alert** optie (type 5): licht alle routers in dat er in het datagebied ook info staat die door de routers zelf verwerkt moet worden.
+	* **De routing header (RH)**: specifieer route die het pakket moet afleggen (een lijst van adressen)
+		- *Routing type* 0 is enige voorlopig geïmplementeerd (= initiële bestemmingsadres is eerste adres in lijst van de RH)
+		- *Wanneer initiële bestemmingsadres dit datagram ontvangt dan stuurt hij dit door naar het tweede*
+		- *Proces gaat door tot uiteindelijke bestemming bereikt*
+		- **Segments left** veld geeft aan hoeveel routers er nog moeten bezocht worden alvorens eindbestemming bereikt is.	
+	* **Fragment header (FH)**: ordeningsmechanisme om gefragmenteerde data terug te reconstrueren	
+	* **Authentication header (AH)**: vergelijken van MD5 sums en antireplay bescherming (onderschepte datagrammen kunnen niet opnieuw verstuurd worden)
+	* **Encapsulating Security Payload header (ESP)**: Staat toe geëncrypteerd te communiceren tussen de knooppunten, geeft aan dat datagram geëncrypteerd is en geeft bestemming
+	    voldoende info om dit te kunnen ontcijferen. Te gebruiken in 2 modes:
+		- Transparante/transport mode: enkel ingekapselde data van het pakket wordt versleuteld (bron- en eindbestemming nog identificeerbaar)
+		- Tunnel mode: volledige datagram verpakt en in een ander datagram inpakken en versturen tussen security gateways
+
+##Vraag 4: Overgang naar IPv6 en autoconfiguratie
+###a) Bespreek de belangrijkste motieven die uiteindelijk een overgang naar IPv6 zullen veroorzaken. (§5.1)
+* In de nabije toekomst zulen er **enorm aantal bijkomende adressen** moeten toegekend worden
+	- 32 bits = 4 miljard adressen
+	- CIDR Hierarchisch systeem maakt manuele adrestoewijzing overbodig, maar laat wel veel adresruimte verspillen (+- 7% wordt slechts gebruikt)
+	- NAT probeert dit probleem te omzeilen maar strookt eigenlijk met de principes van IP adressering
+* **Performantieproblemen** door de structuur van de IPv4 berichten
+	- berichten met veel opties worden door routers als uitzonderingen gezien en worden met lagere prioriteit verwerkt
+	- routerontwerp geoptimaliseerd voor IP verkeer met vaste headers (maar in IPv4 is dit zo niet)
+	- Helaas is CIDR pas vanaf 1995 ingevoerd, en zijn de meeste tier-1 ISP’s verantwoordelijk voor meerdere niet-aggregeerbare adresblokken. Hierdoor bevatten de default-free routers (ASBR’s) van het Internet momenteel bijna tweehonderdduizend routes. Dit is zeer nefast voor het routingproces, en dus voor de globale werking van het Internet.
+* **Mogelijkheden voor opties** zijn in IPv4 zeer beperkt (is nochtans de eneige manier om aan recentere noden te voorzien)
+* **Geen aandacht besteed aan beveiligingsaspect**: de verantwoordelijkheid voor beveiliging ligt bij IPv4 in de hogere protocollagen
+* **Mobiliteit van computers**: voorziening die dit beantwoorden zitten niet in IPv4 zelf maar moeten door protocollen uit de toepassingslaag geïmplementeerd worden (behalve APIPA).
+
+###b) Hoe zal deze overgang worden gerealiseerd ? Van welke technieken zal men gebruik maken ? Je moet hierbij onder andere tunneling in algemene termen beschrijven, echter zonder dieper in te gaan op de praktische uitwerking ervan. (§5.7 zonder subsecties)
+
+De overgang van IPv4 naar IPv6 zal geleidelijk en relatief langzaam moeten gebeuren.
+
+* Upgrades van IPv4 knooppunten moeten op willekeurig tijdstip kunnen gebeuren (onafhankelijk van routers of andere knooppunten)
+* IPv4 en IPv6 moeten onafhankelijk van elkaar kunnen blijven werken (IPv4 worden in IPv6 middens bijvoorbeeld ::FFFF:w.x.y.z, hiermee kunnen ze in IPv6 gerepresenteerd worden)
+* Parallel trekken met eilandjes (IPv6 netwerken) en oceanen (IPv4 netwerken) die geleidelijk aan opdrogen.
+
+Verschillende technieken:
+
+1. **Dual-IP - IPv6/IPv4 systemen**: ondersteunen zowel IPv4 als IPv6
+	* Beschikken over duale internetlaag (IPv4 en IPv6)
+	* Maken zelf keuze tussen IPv4 of IPv6 adhv eindbestemming
+2. **IPv6 over IPv4 tunneling**: IPv6 datagrammen die van IPv6 *eilanden* ingekapseld worden in een IPv4 datagram om de *oceaan* over te raken.
+	* IPv6/IPv4 node geef aan het protocolveld in de IPv4 datagram nummer 41
+	* Eindpunt verwijdert de IPv4 header om de IPv6 te achterhalen.
+3. **Protocol header translation**: door IPv6/IPv4 routers uitgevoerd. IPv4 header omzetten naar IPv6 header en omgekeerd.
+	* IPv4-gemapte adressen koppelen aan echte IPv6 adressen
+	* Is een techniek voor de laatste migratiestappen om de laatste overgebleven IPv4 knooppunten te integreren in een bijna volledig IPv6 internetwerk. 
+
+###c) Geef de alternatieve mogelijkheden voor autoconfiguratie in IPv6. Bespreek hierbij de opeenvolgende stappen. (§5.6)
+1. **Statefull autoconfiguratie**  
+*= houdt op centrale server alle knooppunten toetandsinformatie bij (ondersteund door protocol zoals DHCP) en deze info kan door knooppunten opgehaald worden*  
+	***Nadeel:***
+	- er is een speciaal serverprogramma voor nodig (in kleinere omgevingen vooral belangrijk)
+
+	***Voordeel:***
+	- Er kan meticuleus geregeld worden door de netwerkbeheerder wie al dan niet een adresconfiguratie krijgt.
+
+Opmerking: DHCPv6 is een manier om aan Stateful autoconfiguratie te doen.
+
+2. **Stateless autoconfiguratie**  
+*= biedt aan individuele knooppunten om hun eigen IPv6 configuratie te bepalen zonder expliciet een server te hoeven ondervragen.*  
+
+**Stappen om een geldige configuratie te bereiken**
+
+1. **Tentatief linklokaal unicast adres**: adhv MAC adres (IEE EUI-64 principe)
+	- Kan reeds communiceren met andere knooppunten op dezelfde verbinding
+2. **Duplicate adress Detection:**
+	- extra verificatie of adres uniek is
+	- Wanneer hij toch een **Neigbor Advertissement** zou ontvangen dan moet het knooppunt *manueel* geconfigureerd worden.
+3. Interface wordt geïnitialiseerd met geldig verklaarde linklokale unicast adres + multicast adres (overeenkomstig met MAC adres, maar eerste 3 bytes vervangen door 33-33-FF) wordt geregistreerd.
+4. Interface probeert tot driemaal een **Router Sollicitation bericht** te versturen.
+	- Router reageert met **Router Advertisement**: hiervan worden Hop Limit, Reachable Time, Retrans Timer en aanbevolen MTU afgeleid
+	- Indien geen antwoord: wordt overgeschakeld op een procedure voor statefull autoconfiguratie
+5. **Prefix Information optie in Advertisement**:  bepaald of autonomous of stateful moet gewerkt worden.
+	- Indien *autonomous* : berekent op basis van prefix een tentatief unicast adres en wordt met Duplicate adress detection gecontroleerd
+	- Bepalen van Preferred Lifetime en Valid Lifetime aand de hand van de Prefix Information optie.
+6. **Managed Adress Configuration vlag** in router advertisement -> ga over op stateful autoconfiguratie om bijkomende adressen te bekomen
+	- Waneer **Other Stateful Configuration vlag**: wordt er bijkomstig stateful autoconfig uitgevoerd om bijkomstige parameter te verkrijgen.
+
+**Statussen tijdens autoconfiguratie:**
+
+1. **Duplicate adress detection** fase: er wordt een adres toegekend als tentatief, het knooppunt is in staat tot *multicast, maar geen unicast* te ontvangen.
+2. **Prefered of deprecated** fase: Het knooppunt beschikt over een geldig adres.
+	- *Prefered* als het in staat is unicast verkeer te ontvangen
+	- *Deprecated*: Levensduur van het adres loopt af, knooppunt moet opzoek naar ander adres of moet geldigheidsduur verlengen. 
+3. **Invalid** fase: na het verstreiken van de levensduur wordt een adres als ongeldig beschouwd en kan het noch multicast, noch unicast ontvangen.
+
+## Vraag 5: IPv6 Tunneling (subsecties §5.7)
+###a) Wat is IPv6 over IPv4 tunneling, en waarvoor zal men deze techniek aanwenden ?
+Een IPv6 over IPv4 tunnel is een IPv6 datagram dat door een startpunt geëncapsuleerd wordt in een IPv4 datagram.  
+Hierdoor wordt het mogelijk om een IPv6 datagram van het ene IPv6 netwerk (*eiland*) naar het andere IPv6 netwerk (*eiland*) te sturen over een pad dat zowel IPv6 als IPv4 netwerken (*oceanen*)  kruist.   
+***Deze techniek zal vooral gebruikt worden in de eerste fasen van de IPv4 naar IPv6 migratie***:  
+*als een organisatie of geografisch deel al volledig naar IPv6 gemigreerd is en ze willen communiceren met andere organisaties of geografische delen die ook al naar IPv6 gemigreerd zijn. Op de weg tussen elkaar liggen echter nog IPv4 netwerken, waardoor er nood is aan encapsulatie van de IPv6 datagram om ze over het conventionele IPv4 netwerk te kunnen sturen.*
+
+###b) Bespreek in detail de diverse, ook de meest recente, tunnel mechanismen waarop men een beroep kan doen. Bespreek telkens onder andere hun toepassingsgebied, vereisten, beperkingen, de relatieve voor- en nadelen, en de gebruikte addresseringsschema's.
+* ***Automatische IPv6 over IPv4 tunneling***  
+Beslissing adhv volgende criteria
+
+	- **Doeladres IPv4**: gebruik IPv4
+	- **Eindbestemming op zelfde subnet**: gebruik IPv6
+	- **Route naar eindbestemming met IPv6 als eerste hop**: bericht via IPv6 naar die router (minder overhead)
+		* Wanneer IPv6 router het bericht tunnelt noemt men dit *router-to-host* automatische tunneling
+	- **Indien geen van de drie criteria voldaan zijn**: automatische tunneling toepassen
+		* Router biedt geen tunneling aan dus host moet die zelf doen *host-to-host* automatische tunneling
+		* IPv4 adres van andere host bepaalt door laatste bytes van het IPv4 compatibele doeladres
+		* Hierdoor gaat het pakket wel tot eindbestemming over IPv4, en daarbovenop moet host nog IPv4 compatibel zijn.
+	- 
+* ***Geconfigureerde IPv6 over IPv4 tunneling***
+	- Geconfigureerde tunnels worden manueel ingesteld en slechts in 1 enkele richting
+	- 1 tunnel met een IPv6/IPv4 router als eindpunt kan voor connectiviteit zorgen met een volledig IPv6 internetwerk (router injecteert ingekapselde IPv6 datagram opnieuw in zijn stack)
+		* Hierna kan pakket opnieuw getunneld worden of gerouted naar de eindbestemming.
+	- **router-to-router tunnel**
+		* beginpunt van tunnel op een border router van een ander IPv6 internetwerk
+		* definieer in routing tabel exact welke routes via welke tunnelinterface bereikt kunnen worden
+	- **host-to-router tunnel**
+		* stel een host machine in als beginpunt
+	- in principe is een tunnel nodig per koppel IPv6 sites dat wil communiceren (dus veel configuratiewerk aan beide zijden)
+		* in de toekomst waarschijnlijk 1 tunnel naar ISP, die dan de verdere tunneling afhandelt
+* ***6to4 tunneling***
+	- Bijzondere vorm van geconfigureerde IPv6 over IPv4 tunneling
+	- Specifiek adresseringsschema van de IPv6-knooppunten (2002:w.x.y.z::/48 met w.x.y.z/p het publieke IPv4 adres van het netwerk).
+	- Een IPv6 knooppunt met zo een adres geconfigureerd noemt ment **6to4-knooppunten**
+		* Knooppunten beschikken over volledige IPv6 functionaliteit
+		* SLA segment is volledig beschikbaar om adressering zoveel mogelijk af te stemmen op de topologie van het netwerk.
+		* Knooppunten hoeven niet dual stack te zijn.
+	- **6to4 router**: is een dual-stack border router met een publiek IPv4 adres voor de tunnelinterface
+		* adverteert globale 2002::/16 adresruimte naar het intranet van de organisatie
+		* hierdoor is onderlinge communicatie mogelijk tussen alle 6to4 knooppunten
+		* Communicatie over IPv4 oceaan
+			1. Host geeft dit door aan de 6to4 router
+			2. 6to4 router herkent adhv van het 2002 TLA waarde dat het IPv6 in IPv4 geëncapsuleerd moet worden
+			3. IPv6 bericht wordt zonder tussenkomst van IPv6 providers over IPv4 gerouterd
+			4. 6to4 router op andere site verwijdert encapsulatie en stuurt het IPv6 bericht op zijn netwerk
+	- **6to4 relay routers**: maken verkeer mogelijk tussen 6to4 en andere IPv6 knooppunten
+		* Beschikt zowel over 6to4 als over een regulier IPv6 adres
+
+	Is door zijn eenvoud de belangrijkste techniek die tijdens overschakeling naar IPv6 gebruikt zal worden maar kent echter ook wat ***nadelen***:
+	- Aan elke organisatie toegewezen 6to4 blok is relatief beperkt in grootte
+	- Adressen zullen na globale migratie hernummerd moeten worden naar reguliere IPv6 adressen
+	- 6to4 kan niet in combinatie met NAT gebruikt worden
+	- Zolang van 6to4 gebruik gemaakt wordt bijlven de routing tabellen van de default-free routers hun huidige grootte behouden
+* **ISATAP tunneling**
+	***Probleem met 6to4***  
+	*Elk eiland moet bij 6to4 beschikken over een publieke IPv4 adresruimt. Hierdoor kan 6to4 NIET toegepast worden tussen subnetten van een zelfde private netwerkinfrastructuur*  
+	***ISATAP (=Intra-Site automatic tunnel Addressing protocol) lost deze tekortkoming op***
+	- IPv4 adres van het eindpunt wordt afgeleid door de laatste 32 bits van het ISATAP adres (van de vorm 0:5EFE:w.x.y.z met w.x.y.z een willekeurig IPv4 adres dat aan interface toegekend werd).
+	- **ISATAP knooppunten** zijn steeds dual stack
+		* Twee knooppunten van verschillende eilanden kunnen IPv6 datagrammen *host-to-host* tunnelen indien ze gebruik maken van de linklokale prefix FE80::/64
+		* Communicatie tussen *ISATAP knooppunten van verschillende organisaties* is meer configuratie vereist.
+			- Knooppunt moet globale prefix ontvangen (via uitwisseling van Router Solicitation en Router Advertisement berichten met border router)
+			- Routingtabel van knooppunt moet een default route opnemen die berichten voor buiten de site bestemd afgeeft aan de intranet interface van de border router  
+			(kan via IPv6 of ISATAP tunneling)
+			- Het bericht wordt hier wel tot 3-maal toe getunneld
