@@ -11,6 +11,7 @@ Het type wordt aangeduid door middel van de optie nummer 53 te zetten. De beschi
 5. **Positief DHCP-Acknowledgement bericht**
 6. **Negatief DHCP-Acknowledgement bericht**
 7. **DHCP-Release bericht**
+8. **DHCP-Inform bericht**
 
 ###b) Bespreek in detail de opeenvolgende stappen van beide DHCP leaseprocessen.
 1. **Client vraagt en ontvangt een adreslease**
